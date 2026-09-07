@@ -1,0 +1,13 @@
+انشاء البيئة الافتراضية
+python.exe -m venv .venv
+
+تشغيل البيئة الافتراضية
+.venv\Scripts\activate
+
+تحميل المتطلبات
+python -m pip install -r backend\requirements.txt
+قد يطلب تحديث الاداة الخاصة بتنزيل حزم البايثون 
+python -m pip install --upgrade pip
+
+تشغيل السيرفر
+uvicorn backend.main:app --reload

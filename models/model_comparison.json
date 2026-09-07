@@ -1,0 +1,34 @@
+{
+  "selection_metric": "f1",
+  "comparison_method": "5-fold stratified cross-validation on training set",
+  "best_model": "Random Forest",
+  "models": [
+    {
+      "name": "Random Forest",
+      "accuracy": 0.7553,
+      "precision": 0.479,
+      "recall": 0.7133,
+      "f1": 0.5729,
+      "roc_auc": 0.773,
+      "is_best": true
+    },
+    {
+      "name": "SVM",
+      "accuracy": 0.7505,
+      "precision": 0.4687,
+      "recall": 0.7133,
+      "f1": 0.5643,
+      "roc_auc": 0.7603,
+      "is_best": false
+    },
+    {
+      "name": "Logistic Regression",
+      "accuracy": 0.7312,
+      "precision": 0.4377,
+      "recall": 0.6511,
+      "f1": 0.5225,
+      "roc_auc": 0.7597,
+      "is_best": false
+    }
+  ]
+}

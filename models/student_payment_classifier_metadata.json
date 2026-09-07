@@ -1,0 +1,96 @@
+{
+  "model_name": "Random Forest",
+  "selection_metric": "f1",
+  "positive_class": {
+    "value": 1,
+    "meaning": "late_payment"
+  },
+  "target_definition": {
+    "0": "paid_on_time",
+    "1": "late_payment"
+  },
+  "features": [
+    "branch",
+    "approx_installment_value",
+    "payment_responsible",
+    "works_while_studying",
+    "governorate",
+    "registered_hours",
+    "previous_payment_delay",
+    "gpa",
+    "attendance_rate",
+    "delay_count",
+    "max_delay_days",
+    "on_time_payment_count",
+    "family_monthly_income",
+    "private_university_siblings",
+    "semester_fee",
+    "study_year",
+    "working_family_members",
+    "previous_unpaid_fees",
+    "housing",
+    "distance_from_university"
+  ],
+  "categorical_features": [
+    "branch",
+    "payment_responsible",
+    "works_while_studying",
+    "governorate",
+    "previous_payment_delay",
+    "family_monthly_income",
+    "study_year",
+    "previous_unpaid_fees",
+    "housing"
+  ],
+  "numeric_features": [
+    "approx_installment_value",
+    "registered_hours",
+    "gpa",
+    "attendance_rate",
+    "delay_count",
+    "max_delay_days",
+    "on_time_payment_count",
+    "private_university_siblings",
+    "semester_fee",
+    "working_family_members",
+    "distance_from_university"
+  ],
+  "best_parameters": {
+    "model__max_depth": 5,
+    "model__min_samples_leaf": 1,
+    "model__n_estimators": 200
+  },
+  "test_metrics": {
+    "accuracy": 0.754717,
+    "precision": 0.470588,
+    "recall": 0.666667,
+    "f1": 0.551724,
+    "roc_auc": 0.762195,
+    "average_precision": 0.474569
+  },
+  "comparison_file": "model_comparison.json",
+  "compared_models": [
+    "Random Forest",
+    "SVM",
+    "Logistic Regression"
+  ],
+  "cleaning_summary": {
+    "raw_rows": 264,
+    "final_rows": 261,
+    "duplicates_removed": 3,
+    "previous_payment_delay_corrections": 89,
+    "invalid_numeric_values_converted_to_nan": {
+      "approx_installment_value": 0,
+      "registered_hours": 4,
+      "gpa": 0,
+      "attendance_rate": 1,
+      "delay_count": 0,
+      "max_delay_days": 0,
+      "on_time_payment_count": 0,
+      "private_university_siblings": 0,
+      "semester_fee": 2,
+      "working_family_members": 0,
+      "distance_from_university": 2
+    }
+  }
+}
