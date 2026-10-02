@@ -6,28 +6,28 @@
     {
       "name": "Random Forest",
       "accuracy": 0.7553,
-      "precision": 0.479,
-      "recall": 0.7133,
-      "f1": 0.5729,
-      "roc_auc": 0.773,
+      "precision": 0.481,
+      "recall": 0.7333,
+      "f1": 0.5809,
+      "roc_auc": 0.7657,
       "is_best": true
     },
     {
       "name": "SVM",
-      "accuracy": 0.7505,
-      "precision": 0.4687,
-      "recall": 0.7133,
-      "f1": 0.5643,
-      "roc_auc": 0.7603,
+      "accuracy": 0.7458,
+      "precision": 0.462,
+      "recall": 0.7156,
+      "f1": 0.5604,
+      "roc_auc": 0.761,
       "is_best": false
     },
     {
       "name": "Logistic Regression",
-      "accuracy": 0.7312,
-      "precision": 0.4377,
-      "recall": 0.6511,
-      "f1": 0.5225,
-      "roc_auc": 0.7597,
+      "accuracy": 0.7361,
+      "precision": 0.4444,
+      "recall": 0.6733,
+      "f1": 0.5338,
+      "roc_auc": 0.7585,
       "is_best": false
     }
   ]

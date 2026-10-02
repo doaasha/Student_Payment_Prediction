@@ -1,5 +1,11 @@
+اغلاق البيئة 
+deactivate
+
+حذف البيئة 
+Remove-Item -Recurse -Force .venv
+
 انشاء البيئة الافتراضية
-python.exe -m venv .venv
+py -3.11 -m venv .venv
 
 تشغيل البيئة الافتراضية
 .venv\Scripts\activate
@@ -11,3 +17,4 @@ python -m pip install --upgrade pip
 
 تشغيل السيرفر
 uvicorn backend.main:app --reload
+python -m uvicorn backend.main:app --reload

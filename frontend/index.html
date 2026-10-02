@@ -1,1758 +1,381 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="نظام تعلم آلة للتنبؤ باحتمالية تأخر الطالب في سداد القسط الدراسي"
-    >
-
-    <title>نظام التنبؤ بسداد القسط</title>
-
-    <!-- v7 لمنع تحميل CSS قديم من Cache -->
-    <link
-        rel="stylesheet"
-        href="/static/style.css?v=7"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#312e81">
+    <title>SDAD ML | نظام التنبؤ بسداد القسط</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/static/style.css?v=41">
 </head>
-
 <body>
-
-
-<!-- =========================================================
-     HEADER
-========================================================= -->
-
-<header class="main-header">
-
-    <div class="header-container">
-
-        <div class="brand">
-
-            <div class="brand-logo-box">
-
-                <img
-                    src="/static/assets/logo_sd.png"
-                    alt="شعار النظام"
-                    class="brand-logo"
-                >
-
-            </div>
-
-            <div class="brand-copy">
-
-                <h1>
-                    نظام التنبؤ بسداد القسط
-                </h1>
-
-                <p>
-                    Student Payment Prediction System
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="header-status">
-
-            <span
-                id="apiStatusDot"
-                class="status-dot"
-            ></span>
-
-            <div>
-
-                <small>حالة النظام</small>
-
-                <strong id="apiStatusText">
-                    جاري التحقق...
-                </strong>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-
-<!-- =========================================================
-     MAIN
-========================================================= -->
-
-<main class="page-shell">
-
-
-    <!-- =====================================================
-         INTRO
-    ====================================================== -->
-
-    <section class="intro-section">
-
-        <div class="intro-copy">
-
-            <span class="intro-badge">
-
-                <span></span>
-
-                MACHINE LEARNING
-
+<div class="app-shell" id="app">
+    <aside class="sidebar" aria-label="التنقل الرئيسي">
+        <a class="brand" href="#home" aria-label="SDAD ML - الرئيسية">
+            <span class="brand-mark">
+                <img src="/static/assets/logo_sd.png" alt="SDAD ML">
             </span>
+            <span class="brand-copy">
+                <strong>SDAD ML</strong>
+                <small>Student Payment Prediction</small>
+            </span>
+        </a>
 
+        <nav class="sidebar-nav">
+            <a href="#home" class="nav-item active" data-page="home">
+                <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9.5v10.5h13V9.5"/><path d="M9.5 20v-6h5v6"/></svg></span>
+                <span>الرئيسية</span>
+            </a>
+            <a href="#prediction" class="nav-item" data-page="prediction">
+                <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V12"/><path d="M12 19V6"/><path d="M19 19V9"/><path d="m4 8 5-4 4 3 7-5"/></svg></span>
+                <span>ابدأ التنبؤ</span>
+            </a>
+            <a href="#models" class="nav-item" data-page="models">
+                <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V9"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19H2"/></svg></span>
+                <span>مقارنة النماذج</span>
+            </a>
+            <a href="#system-info" class="nav-item" data-page="system-info">
+                <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10.5v6"/><path d="M12 7.5h.01"/></svg></span>
+                <span>معلومات النظام</span>
+            </a>
+            <a href="#about" class="nav-item" data-page="about">
+                <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 4h8a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg></span>
+                <span>حول المشروع</span>
+            </a>
+        </nav>
 
-            <h2>
-
-                تحليل ذكي لاحتمالية
-
-                <strong>
-                    سداد القسط الدراسي
-                </strong>
-
-            </h2>
-
-
-            <p>
-                أدخل بيانات الطالب ضمن أربع مراحل منظمة،
-                وسيقوم نموذج تعلم الآلة بتحليلها وتقدير
-                احتمالية السداد في الموعد أو التأخر.
-            </p>
-
-
-            <div class="intro-meta">
-
-                <div class="meta-item">
-
-                    <span class="meta-number">
-                        4
-                    </span>
-
-                    <div>
-
-                        <strong>مراحل</strong>
-
-                        <small>إدخال منظم</small>
-
-                    </div>
-
-                </div>
-
-
-                <div class="meta-item">
-
-                    <span class="meta-number">
-                        20
-                    </span>
-
-                    <div>
-
-                        <strong>متغيرًا</strong>
-
-                        <small>تدخل في التحليل</small>
-
-                    </div>
-
-                </div>
-
-
-                <div class="meta-item">
-
-                    <span class="model-indicator"></span>
-
-                    <div>
-
-                        <strong id="heroModelName">
-                            جاري التحميل...
-                        </strong>
-
-                        <small>
-                            النموذج المعتمد
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="sidebar-insight">
+            <span class="insight-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V11"/><path d="M10 19V5"/><path d="M16 19v-9"/><path d="M22 19v-4"/></svg></span>
+            <strong>قرار أوضح يبدأ من بيانات أدق</strong>
+            <p>أداة مساندة مبنية على تعلم الآلة لتقدير احتمال سداد القسط.</p>
         </div>
 
-
-
-        <!-- Visual -->
-
-        <div class="intro-visual">
-
-            <div class="visual-halo halo-one"></div>
-
-            <div class="visual-halo halo-two"></div>
-
-
-            <div class="visual-main-card">
-
-                <div class="visual-logo">
-
-                    <img
-                        src="/static/assets/logo_sd.png"
-                        alt="شعار النظام"
-                    >
-
-                </div>
-
-                <div class="visual-caption">
-
-                    <strong>
-                        ML Prediction
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="floating-chip chip-top">
-
-                <span class="chip-dot"></span>
-
-                Model Ready
-
-            </div>
-
-
-            <div class="floating-chip chip-bottom">
-
-                3 Models
-
-            </div>
-
+        <div class="sidebar-footer">
+            <span>SDAD ML</span>
+            <small>Version 1.0.0</small>
         </div>
+    </aside>
 
-    </section>
-
-
-
-    <!-- =====================================================
-         WIZARD
-    ====================================================== -->
-
-    <section class="wizard-workspace">
-
-
-        <!-- =================================================
-             FORM
-        ================================================== -->
-
-        <div class="wizard-panel">
-
-
-            <div class="panel-head">
-
-                <div>
-
-                    <span class="panel-eyebrow">
-                        نموذج البيانات
-                    </span>
-
-                    <h3 id="panelTitle">
-                        البيانات الأكاديمية
-                    </h3>
-
-                    <p id="panelDescription">
-                        أدخل بيانات الدراسة والأداء الأكاديمي للطالب.
-                    </p>
-
-                </div>
-
-
-                <div class="panel-step-chip">
-
-                    <span>
-                        المرحلة
-                    </span>
-
-                    <strong id="panelStepNumber">
-                        01
-                    </strong>
-
-                </div>
-
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-title">
+                <span class="eyebrow">MACHINE LEARNING SYSTEM</span>
+                <strong>نظام التنبؤ بسداد القسط الطلابي</strong>
             </div>
+            <div class="topbar-actions">
+                <span class="privacy-pill"><i></i> البيانات تستخدم للتحليل فقط</span>
+                <div class="avatar" aria-hidden="true">S</div>
+            </div>
+        </header>
 
-
-
-            <form
-                id="studentForm"
-                novalidate
-            >
-
-
-                <!-- =========================================
-                     STEP 1
-                ========================================== -->
-
-                <section
-                    class="form-step active"
-                    data-step="1"
-                >
-
-                    <div class="form-grid">
-
-
-                        <div class="field-group">
-
-                            <label for="branch">
-                                الفرع
-                            </label>
-
-                            <select
-                                id="branch"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر الفرع
-                                </option>
-
-                                <option value="كلية الهندسة المعلوماتية">
-                                    كلية الهندسة المعلوماتية
-                                </option>
-
-                                <option value="معهد أمن المعلومات والشبكات">
-                                    معهد أمن المعلومات والشبكات
-                                </option>
-
-                                <option value="معهد نظم المعلومات الإدارية">
-                                    معهد نظم المعلومات الإدارية
-                                </option>
-
-                                <option value="كلية إدارة الأعمال">
-                                    كلية إدارة الأعمال
-                                </option>
-
-                                <option value="كلية الاقتصاد">
-                                    كلية الاقتصاد
-                                </option>
-
-                                <option value="كلية التمريض">
-                                    كلية التمريض
-                                </option>
-
-                                <option value="كلية الحقوق">
-                                    كلية الحقوق
-                                </option>
-
-                                <option value="كلية الصيدلة">
-                                    كلية الصيدلة
-                                </option>
-
-                                <option value="كلية الهندسة المدنية">
-                                    كلية الهندسة المدنية
-                                </option>
-
-                                <option value="كلية الهندسة المعمارية">
-                                    كلية الهندسة المعمارية
-                                </option>
-
-                            </select>
-
+        <!-- HOME -->
+        <section id="home" class="page active">
+            <div class="home-wrap">
+                <section class="home-hero">
+                    <div class="home-hero-copy">
+                        <span class="hero-kicker">SDAD ML • STUDENT PAYMENT PREDICTION</span>
+                        <h1>حوّل بيانات الطالب إلى <em>تقدير واضح</em> لاحتمالية السداد.</h1>
+                        <p>واجهة بسيطة ومنظمة تساعد على إدخال البيانات على مراحل، ثم تعرض نتيجة التنبؤ واحتمالاتها والنموذج المستخدم بصورة قابلة للفهم.</p>
+                        <div class="hero-actions">
+                            <a class="btn primary large" href="#prediction">ابدأ التنبؤ الآن <span>←</span></a>
+                            <a class="btn ghost large" href="#models">استعرض أداء النماذج</a>
                         </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="study_year">
-                                السنة الدراسية
-                            </label>
-
-                            <select
-                                id="study_year"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر السنة
-                                </option>
-
-                                <option value="أولى">
-                                    أولى
-                                </option>
-
-                                <option value="ثانية">
-                                    ثانية
-                                </option>
-
-                                <option value="ثالثة">
-                                    ثالثة
-                                </option>
-
-                                <option value="رابعة">
-                                    رابعة
-                                </option>
-
-                                <option value="خامسة">
-                                    خامسة
-                                </option>
-
-                            </select>
-
+                        <div class="hero-trust">
+                            <span>4 مراحل إدخال</span>
+                            <i></i>
+                            <span>تحقق فوري من الحقول</span>
+                            <i></i>
+                            <span>نتيجة احتمالية</span>
                         </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="registered_hours">
-                                عدد الساعات المسجلة
-                            </label>
-
-                            <input
-                                id="registered_hours"
-                                type="number"
-                                min="0"
-                                max="30"
-                                required
-                                placeholder="مثال: 18"
-                            >
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="gpa">
-                                المعدل التراكمي
-                            </label>
-
-                            <div class="input-unit">
-
-                                <input
-                                    id="gpa"
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="0.01"
-                                    required
-                                    placeholder="مثال: 75"
-                                >
-
-                                <span>/ 100</span>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="attendance_rate">
-                                نسبة الحضور
-                            </label>
-
-                            <div class="input-unit">
-
-                                <input
-                                    id="attendance_rate"
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="0.01"
-                                    required
-                                    placeholder="مثال: 85"
-                                >
-
-                                <span>%</span>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="works_while_studying">
-                                هل تعمل إلى جانب الدراسة؟
-                            </label>
-
-                            <select
-                                id="works_while_studying"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر الإجابة
-                                </option>
-
-                                <option value="نعم">
-                                    نعم
-                                </option>
-
-                                <option value="لا">
-                                    لا
-                                </option>
-
-                            </select>
-
-                        </div>
-
                     </div>
 
+                    <div class="hero-visual" aria-hidden="true">
+                        <div class="visual-orbit orbit-one"></div>
+                        <div class="visual-orbit orbit-two"></div>
+                        <div class="visual-card visual-main-card">
+                            <span>نموذج التنبؤ</span>
+                            <strong>جاهز للتحليل</strong>
+                            <div class="visual-bars"><i></i><i></i><i></i><i></i><i></i></div>
+                        </div>
+                        <div class="visual-card mini-card mini-card-a"><b>F1</b><span>Model evaluation</span></div>
+                        <div class="visual-card mini-card mini-card-b"><b>✓</b><span>Input validation</span></div>
+                    </div>
                 </section>
 
-
-
-                <!-- =========================================
-                     STEP 2
-                ========================================== -->
-
-                <section
-                    class="form-step"
-                    data-step="2"
-                >
-
-                    <div class="form-grid">
-
-
-                        <div class="field-group">
-
-                            <label for="approx_installment_value">
-                                قيمة القسط التقريبية
-                            </label>
-
-                            <div class="input-unit">
-
-                                <input
-                                    id="approx_installment_value"
-                                    type="number"
-                                    min="1"
-                                    step="0.01"
-                                    required
-                                    placeholder="مثال: 350"
-                                >
-
-                                <span>$</span>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="semester_fee">
-                                قيمة القسط الفصلي
-                            </label>
-
-                            <div class="input-unit">
-
-                                <input
-                                    id="semester_fee"
-                                    type="number"
-                                    min="11"
-                                    step="0.01"
-                                    required
-                                    placeholder="مثال: 350"
-                                >
-
-                                <span>$</span>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="payment_responsible">
-                                المسؤول عن دفع القسط
-                            </label>
-
-                            <select
-                                id="payment_responsible"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر المسؤول عن الدفع
-                                </option>
-
-                                <option value="الأسرة(اب-أم)">
-                                    الأسرة (أب - أم)
-                                </option>
-
-                                <option value="الطالب">
-                                    الطالب
-                                </option>
-
-                                <option value="الطالب والأسرة">
-                                    الطالب والأسرة
-                                </option>
-
-                                <option value="منحة/جهة داعمة">
-                                    منحة / جهة داعمة
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="family_monthly_income">
-                                الدخل الشهري للعائلة
-                            </label>
-
-                            <select
-                                id="family_monthly_income"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر فئة الدخل
-                                </option>
-
-                                <option value="اقل من 100">
-                                    أقل من 100 دولار
-                                </option>
-
-                                <option value="بين 100 و 200">
-                                    بين 100 و 200 دولار
-                                </option>
-
-                                <option value="بين 200 و 500">
-                                    بين 200 و 500 دولار
-                                </option>
-
-                                <option value="بين 500 و 1000">
-                                    بين 500 و 1000 دولار
-                                </option>
-
-                                <option value="اكثر من 1000">
-                                    أكثر من 1000 دولار
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="working_family_members">
-                                عدد العاملين في الأسرة
-                            </label>
-
-                            <input
-                                id="working_family_members"
-                                type="number"
-                                min="0"
-                                required
-                                placeholder="مثال: 2"
-                            >
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="private_university_siblings">
-                                عدد الإخوة في التعليم الجامعي الخاص
-                            </label>
-
-                            <input
-                                id="private_university_siblings"
-                                type="number"
-                                min="0"
-                                required
-                                placeholder="مثال: 1"
-                            >
-
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-
-                <!-- =========================================
-                     STEP 3
-                ========================================== -->
-
-                <section
-                    class="form-step"
-                    data-step="3"
-                >
-
-                    <div class="form-grid">
-
-
-                        <div class="field-group">
-
-                            <label for="previous_payment_delay">
-                                هل سبق أن تأخرت في السداد؟
-                            </label>
-
-                            <select
-                                id="previous_payment_delay"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر الإجابة
-                                </option>
-
-                                <option value="نعم">
-                                    نعم
-                                </option>
-
-                                <option value="لا">
-                                    لا
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="previous_unpaid_fees">
-                                هل توجد أقساط سابقة غير مسددة؟
-                            </label>
-
-                            <select
-                                id="previous_unpaid_fees"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر الإجابة
-                                </option>
-
-                                <option value="نعم">
-                                    نعم
-                                </option>
-
-                                <option value="لا">
-                                    لا
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="delay_count">
-                                عدد مرات التأخر
-                            </label>
-
-                            <input
-                                id="delay_count"
-                                type="number"
-                                min="0"
-                                required
-                                placeholder="مثال: 2"
-                            >
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="max_delay_days">
-                                أقصى مدة تأخير
-                            </label>
-
-                            <div class="input-unit">
-
-                                <input
-                                    id="max_delay_days"
-                                    type="number"
-                                    min="0"
-                                    required
-                                    placeholder="مثال: 10"
-                                >
-
-                                <span>يوم</span>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="on_time_payment_count">
-                                عدد مرات السداد في الموعد
-                            </label>
-
-                            <input
-                                id="on_time_payment_count"
-                                type="number"
-                                min="0"
-                                required
-                                placeholder="مثال: 4"
-                            >
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="form-note">
-
-                        <span class="form-note-icon">
-                            i
-                        </span>
-
-                        <p>
-                            عند اختيار «لا» في سؤال التأخر السابق،
-                            سيتم ضبط عدد مرات التأخر وأقصى مدة تأخير
-                            على صفر تلقائيًا.
-                        </p>
-
-                    </div>
-
-                </section>
-
-
-
-                <!-- =========================================
-                     STEP 4
-                ========================================== -->
-
-                <section
-                    class="form-step"
-                    data-step="4"
-                >
-
-                    <div class="form-grid">
-
-
-                        <div class="field-group">
-
-                            <label for="governorate">
-                                المحافظة
-                            </label>
-
-                            <select
-                                id="governorate"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر المحافظة
-                                </option>
-
-                                <option value="إدلب">إدلب</option>
-                                <option value="الحسكة">الحسكة</option>
-                                <option value="الرقة">الرقة</option>
-                                <option value="السويداء">السويداء</option>
-                                <option value="القنيطرة">القنيطرة</option>
-                                <option value="اللاذقية">اللاذقية</option>
-                                <option value="حلب">حلب</option>
-                                <option value="حماة">حماة</option>
-                                <option value="حمص">حمص</option>
-                                <option value="درعا">درعا</option>
-                                <option value="دمشق">دمشق</option>
-                                <option value="دير الزور">دير الزور</option>
-                                <option value="طرطوس">طرطوس</option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="housing">
-                                نوع السكن
-                            </label>
-
-                            <select
-                                id="housing"
-                                required
-                            >
-
-                                <option value="">
-                                    اختر نوع السكن
-                                </option>
-
-                                <option value="ملك">
-                                    ملك
-                                </option>
-
-                                <option value="ايجار">
-                                    إيجار
-                                </option>
-
-                                <option value="سكن جامعي">
-                                    سكن جامعي
-                                </option>
-
-                                <option value="مع الأقارب">
-                                    مع الأقارب
-                                </option>
-
-                                <option value="مخيم">
-                                    مخيم
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-
-                        <div class="field-group">
-
-                            <label for="distance_from_university">
-                                المسافة عن الجامعة
-                            </label>
-
-                            <div class="input-unit">
-
-                                <input
-                                    id="distance_from_university"
-                                    type="number"
-                                    min="0"
-                                    max="1000"
-                                    step="0.1"
-                                    required
-                                    placeholder="مثال: 15"
-                                >
-
-                                <span>كم</span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="ready-box">
-
-                        <span class="ready-check">
-                            ✓
-                        </span>
-
+                <section class="home-section">
+                    <div class="section-title-row">
                         <div>
-
-                            <strong>
-                                البيانات أصبحت جاهزة للتحليل
-                            </strong>
-
-                            <p>
-                                راجع القيم المدخلة ثم نفّذ التنبؤ.
-                            </p>
-
+                            <span class="eyebrow">HOW IT WORKS</span>
+                            <h2>تجربة قصيرة، واضحة، ومنطقية</h2>
                         </div>
-
+                        <p>تم تقسيم البيانات إلى مجموعات مترابطة بدل عرض نموذج طويل ومزدحم دفعة واحدة.</p>
                     </div>
 
+                    <div class="feature-grid">
+                        <article class="feature-card">
+                            <span class="feature-number">01</span>
+                            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4-9-4Z"/><path d="M7 10v5c2.7 2.4 7.3 2.4 10 0v-5"/></svg></div>
+                            <h3>بيانات أكاديمية</h3>
+                            <p>الكلية، المعدل، الحضور، السنة الدراسية والساعات المسجلة.</p>
+                        </article>
+                        <article class="feature-card">
+                            <span class="feature-number">02</span>
+                            <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.5c.5-1 1.4-1.5 2.7-1.5 1.6 0 2.8.8 2.8 2 0 3-5.5 1.6-5.5 4.3 0 1.1 1.1 1.9 2.8 1.9 1.3 0 2.2-.4 2.9-1.3"/></svg></div>
+                            <h3>وضع مالي وأسري</h3>
+                            <p>الدخل، قيمة القسط، المسؤول عن الدفع وعدد العاملين في الأسرة.</p>
+                        </article>
+                        <article class="feature-card">
+                            <span class="feature-number">03</span>
+                            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M5 4v16"/><path d="M5 7h11a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h10"/></svg></div>
+                            <h3>سجل السداد</h3>
+                            <p>التأخيرات السابقة، أقصى مدة تأخير والسداد في الموعد.</p>
+                        </article>
+                        <article class="feature-card">
+                            <span class="feature-number">04</span>
+                            <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg></div>
+                            <h3>الموقع والسكن</h3>
+                            <p>المحافظة، نوع السكن والمسافة عن الجامعة قبل تنفيذ التحليل.</p>
+                        </article>
+                    </div>
                 </section>
 
-
-
-                <!-- =================================================
-                     ERROR
-                ================================================== -->
-
-                <div
-                    id="errorMessage"
-                    class="error-message hidden"
-                    role="alert"
-                ></div>
-
-
-
-                <!-- =================================================
-                     NAVIGATION
-                ================================================== -->
-
-                <div class="wizard-actions">
-
-
-                    <button
-                        type="button"
-                        id="previousButton"
-                        class="secondary-button previous-button hidden"
-                    >
-
-                        <span>→</span>
-
-                        السابق
-
-                    </button>
-
-
-
-                    <div class="actions-center">
-
-                        <span id="actionStepText">
-                            1 / 4
-                        </span>
-
-                    </div>
-
-
-
-                    <button
-                        type="button"
-                        id="nextButton"
-                        class="primary-button next-button"
-                    >
-
-                        التالي
-
-                        <span>←</span>
-
-                    </button>
-
-
-
-                    <button
-                        type="submit"
-                        id="predictButton"
-                        class="predict-button hidden"
-                    >
-
-                        <span id="buttonText">
-                            تنفيذ التنبؤ
-                        </span>
-
-                        <span>✦</span>
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-
-
-        <!-- =================================================
-             SIDEBAR
-        ================================================== -->
-
-        <aside class="wizard-sidebar">
-
-
-            <div class="sidebar-progress-head">
-
-                <div>
-
-                    <span>
-                        تقدم إدخال البيانات
-                    </span>
-
-                    <strong id="completionPercent">
-                        0%
-                    </strong>
-
-                </div>
-
-
-                <div class="sidebar-ring">
-
-                    <svg
-                        viewBox="0 0 70 70"
-                        class="progress-ring-svg"
-                    >
-
-                        <circle
-                            class="ring-background"
-                            cx="35"
-                            cy="35"
-                            r="29"
-                        />
-
-                        <circle
-                            id="sidebarProgressRing"
-                            class="ring-progress"
-                            cx="35"
-                            cy="35"
-                            r="29"
-                        />
-
-                    </svg>
-
-                    <span id="ringPercentage">
-                        0%
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="progress-summary">
-
-                <strong id="completionFields">
-                    0 من 20
-                </strong>
-
-                <span>
-                    حقل مكتمل
-                </span>
-
-            </div>
-
-
-
-            <div class="vertical-steps">
-
-
-                <div
-                    class="sidebar-step active"
-                    data-sidebar-step="1"
-                >
-
-                    <div class="sidebar-step-icon">
-                        <span>1</span>
-                    </div>
-
-                    <div class="sidebar-step-copy">
-
-                        <strong>
-                            البيانات الأكاديمية
-                        </strong>
-
-                        <small>
-                            الدراسة والأداء الأكاديمي
-                        </small>
-
-                    </div>
-
-                    <span class="sidebar-step-status">
-                        الحالية
-                    </span>
-
-                </div>
-
-
-                <div class="sidebar-connector"></div>
-
-
-
-                <div
-                    class="sidebar-step"
-                    data-sidebar-step="2"
-                >
-
-                    <div class="sidebar-step-icon">
-                        <span>2</span>
-                    </div>
-
-                    <div class="sidebar-step-copy">
-
-                        <strong>
-                            المالية والأسرية
-                        </strong>
-
-                        <small>
-                            القسط والدخل والأسرة
-                        </small>
-
-                    </div>
-
-                    <span class="sidebar-step-status"></span>
-
-                </div>
-
-
-                <div class="sidebar-connector"></div>
-
-
-
-                <div
-                    class="sidebar-step"
-                    data-sidebar-step="3"
-                >
-
-                    <div class="sidebar-step-icon">
-                        <span>3</span>
-                    </div>
-
-                    <div class="sidebar-step-copy">
-
-                        <strong>
-                            سجل السداد
-                        </strong>
-
-                        <small>
-                            التأخر والدفعات السابقة
-                        </small>
-
-                    </div>
-
-                    <span class="sidebar-step-status"></span>
-
-                </div>
-
-
-                <div class="sidebar-connector"></div>
-
-
-
-                <div
-                    class="sidebar-step"
-                    data-sidebar-step="4"
-                >
-
-                    <div class="sidebar-step-icon">
-                        <span>4</span>
-                    </div>
-
-                    <div class="sidebar-step-copy">
-
-                        <strong>
-                            السكن والموقع
-                        </strong>
-
-                        <small>
-                            المحافظة والمسافة
-                        </small>
-
-                    </div>
-
-                    <span class="sidebar-step-status"></span>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="sidebar-info-card">
-
-                <span class="info-card-icon">
-                    ✦
-                </span>
-
-                <div>
-
-                    <strong>
-                        تحليل آلي
-                    </strong>
-
-                    <p>
-                        يتم تنفيذ التنبؤ بعد استكمال
-                        جميع البيانات المطلوبة.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </aside>
-
-    </section>
-
-</main>
-
-
-
-<!-- =========================================================
-     RESULT MODAL
-========================================================= -->
-
-<div
-    id="resultModal"
-    class="modal-overlay"
-    aria-hidden="true"
->
-
-    <div
-        class="result-modal"
-        role="dialog"
-        aria-modal="true"
-    >
-
-
-        <!-- =================================================
-             MODAL HEADER
-        ================================================== -->
-
-        <div class="modal-header">
-
-            <div class="modal-brand">
-
-                <div class="modal-brand-logo">
-
-                    <img
-                        src="/static/assets/logo_sd.png"
-                        alt="شعار النظام"
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <span class="modal-eyebrow">
-                        PREDICTION RESULT
-                    </span>
-
-                    <h2>
-                        نتيجة تحليل بيانات الطالب
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="closeModalButton"
-                type="button"
-                class="modal-close"
-                aria-label="إغلاق"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-
-        <!-- =================================================
-             LOADING
-        ================================================== -->
-
-        <div
-            id="modalLoading"
-            class="modal-loading hidden"
-        >
-
-            <div class="analysis-loader">
-
-                <div class="loader-orbit orbit-1"></div>
-
-                <div class="loader-orbit orbit-2"></div>
-
-                <div class="loader-core">
-                    ✦
-                </div>
-
-            </div>
-
-
-            <h3>
-                جاري تحليل بيانات الطالب
-            </h3>
-
-            <p>
-                يقوم نموذج تعلم الآلة الآن بمعالجة البيانات...
-            </p>
-
-        </div>
-
-
-
-        <!-- =================================================
-             RESULT
-        ================================================== -->
-
-        <div
-            id="modalResultContent"
-            class="modal-result-content hidden"
-        >
-
-
-            <!-- =============================================
-                 DECISION
-            ============================================== -->
-
-            <section
-                id="resultHero"
-                class="result-banner"
-            >
-
-                <div class="result-status-area">
-
-                    <div
-                        id="resultStateIcon"
-                        class="result-status-icon"
-                    ></div>
-
-
+                <section class="home-cta-card">
                     <div>
-
-                        <span class="result-label">
-                            القرار المتوقع
-                        </span>
-
-                        <h3 id="resultTitle"></h3>
-
-                        <p id="resultDescription"></p>
-
+                        <span class="eyebrow">READY WHEN YOU ARE</span>
+                        <h2>هل البيانات جاهزة؟ ابدأ التنبؤ بخطوات قصيرة.</h2>
                     </div>
+                    <a class="btn primary large" href="#prediction">الانتقال إلى النموذج <span>←</span></a>
+                </section>
+            </div>
+        </section>
 
+        <!-- PREDICTION -->
+        <section id="prediction" class="page">
+            <div class="page-wrap prediction-page-wrap">
+                <div class="page-heading split-heading">
+                    <div>
+                        <span class="eyebrow">NEW PREDICTION</span>
+                        <h1>تنبؤ جديد</h1>
+                        <p>أدخل بيانات الطالب على أربع مراحل. لن يتم الانتقال قبل اكتمال بيانات المرحلة الحالية.</p>
+                    </div>
+                    <div class="heading-note"><span>i</span><p>كل الحقول مطلوبة، ويمكن الرجوع للمرحلة السابقة دون فقد البيانات.</p></div>
                 </div>
 
-
-                <div class="result-model-box">
-
-                    <span>
-                        النموذج المعتمد
-                    </span>
-
-                    <strong id="usedModel">
-                        -
-                    </strong>
-
-                    <small>
-                        الأفضل في مرحلة التقييم
-                    </small>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =============================================
-                 MAIN RESULT GRID
-            ============================================== -->
-
-            <div class="result-main-grid">
-
-
-                <!-- PROBABILITY -->
-
-                <section class="result-card probability-card">
-
-                    <div class="result-card-heading">
-
-                        <div>
-
-                            <span>
-                                PREDICTION CONFIDENCE
-                            </span>
-
-                            <h3>
-                                احتمالات النتيجة
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="confidence-layout">
-
-
-                        <div
-                            id="probabilityRing"
-                            class="probability-ring"
-                        >
-
-                            <div class="probability-ring-inner">
-
-                                <span>
-                                    الاحتمال الأعلى
-                                </span>
-
-                                <strong id="mainProbability">
-                                    0%
-                                </strong>
-
+                <div class="prediction-layout">
+                    <aside class="prediction-aside">
+                        <div class="card progress-card">
+                            <div class="card-title-row">
+                                <div><span class="eyebrow">PROGRESS</span><h2>تقدم الإدخال</h2></div>
+                                <span class="step-count" id="completionFields">1 من 4</span>
                             </div>
-
+                            <div class="progress-circle">
+                                <svg viewBox="0 0 120 120" aria-hidden="true">
+                                    <circle class="progress-bg" cx="60" cy="60" r="49"></circle>
+                                    <circle id="sidebarProgressRing" class="progress-value" cx="60" cy="60" r="49"></circle>
+                                </svg>
+                                <div class="progress-center"><strong id="ringPercentage">25%</strong><span>مكتمل</span></div>
+                            </div>
+                            <div id="completionPercent" class="visually-hidden" aria-hidden="true">25%</div>
+                            <p class="progress-help">أكمل بيانات المرحلة الحالية ثم انتقل للمرحلة التالية.</p>
                         </div>
 
+                        <div class="card guidance-card">
+                            <span class="guidance-icon"><svg viewBox="0 0 24 24"><path d="M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z"/><path d="M9 22h6"/><path d="M9 15h6"/></svg></span>
+                            <h3>قبل أن تبدأ</h3>
+                            <ul>
+                                <li><span>✓</span> استخدم بيانات واقعية قدر الإمكان.</li>
+                                <li><span>✓</span> راجع القيم الرقمية قبل الإرسال.</li>
+                                <li><span>✓</span> النتيجة تقدير وليست قرارًا نهائيًا.</li>
+                            </ul>
+                        </div>
+                    </aside>
 
+                    <div class="form-card">
+                        <div class="steps" aria-label="مراحل التنبؤ">
+                            <div class="step active" data-step-indicator="1"><span>1</span><b>أكاديمية</b></div>
+                            <div class="step-line"></div>
+                            <div class="step" data-step-indicator="2"><span>2</span><b>مالية وأسرية</b></div>
+                            <div class="step-line"></div>
+                            <div class="step" data-step-indicator="3"><span>3</span><b>سجل السداد</b></div>
+                            <div class="step-line"></div>
+                            <div class="step" data-step-indicator="4"><span>4</span><b>الموقع والسكن</b></div>
+                        </div>
 
-                        <div class="probability-values">
-
-
-                            <div class="compact-metric">
-
-                                <div class="compact-metric-head">
-
-                                    <div>
-
-                                        <span class="metric-state success-state">
-                                            ✓
-                                        </span>
-
-                                        <span>
-                                            السداد في الموعد
-                                        </span>
-
+                        <form id="studentForm" novalidate>
+                            <section class="form-step active" data-step="1">
+                                <div class="section-heading">
+                                    <span class="section-heading-icon"><svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4-9-4Z"/><path d="M7 10v5c2.7 2.4 7.3 2.4 10 0v-5"/><path d="M21 9v6"/></svg></span>
+                                    <div><small>المرحلة 01</small><h3>البيانات الأكاديمية</h3><p>معلومات الدراسة والأداء الأكاديمي الحالي.</p></div>
+                                </div>
+                                <div class="fields-grid">
+                                    <div class="field field-wide">
+                                        <label for="branch">الفرع / الكلية</label>
+                                        <select id="branch" required>
+                                            <option value="">اختر الفرع أو الكلية</option>
+                                            <option value="كلية الهندسة المعلوماتية">كلية الهندسة المعلوماتية</option>
+                                            <option value="معهد أمن المعلومات والشبكات">معهد أمن المعلومات والشبكات</option>
+                                            <option value="معهد نظم المعلومات الإدارية">معهد نظم المعلومات الإدارية</option>
+                                            <option value="كلية إدارة الأعمال">كلية إدارة الأعمال</option>
+                                            <option value="كلية الاقتصاد">كلية الاقتصاد</option>
+                                            <option value="كلية التمريض">كلية التمريض</option>
+                                            <option value="كلية الحقوق">كلية الحقوق</option>
+                                            <option value="كلية الصيدلة">كلية الصيدلة</option>
+                                            <option value="كلية الهندسة المدنية">كلية الهندسة المدنية</option>
+                                            <option value="كلية الهندسة المعمارية">كلية الهندسة المعمارية</option>
+                                        </select>
                                     </div>
-
-                                    <strong id="onTimeMetric">
-                                        0%
-                                    </strong>
-
+                                    <div class="field"><label for="gpa">المعدل التراكمي</label><div class="input-wrap"><input id="gpa" type="number" min="0" max="100" step="0.01" required placeholder="مثال: 75"><span>%</span></div></div>
+                                    <div class="field"><label for="study_year">السنة الدراسية</label><select id="study_year" required><option value="">اختر السنة</option><option value="أولى">أولى</option><option value="ثانية">ثانية</option><option value="ثالثة">ثالثة</option><option value="رابعة">رابعة</option><option value="خامسة">خامسة</option></select></div>
+                                    <div class="field"><label for="attendance_rate">نسبة الحضور</label><div class="input-wrap"><input id="attendance_rate" type="number" min="0" max="100" step="0.01" required placeholder="مثال: 90"><span>%</span></div></div>
+                                    <div class="field"><label for="registered_hours">عدد الساعات المسجلة</label><input id="registered_hours" type="number" min="0" max="30" required placeholder="مثال: 18"></div>
+                                    <div class="field"><label for="approx_installment_value">القيمة التقريبية للقسط</label><div class="input-wrap"><input id="approx_installment_value" type="number" min="0.01" step="0.01" required placeholder="مثال: 1500"><span>ل.س</span></div></div>
+                                    <div class="field"><label for="works_while_studying">هل تعمل إلى جانب الدراسة؟</label><select id="works_while_studying" required><option value="">اختر الإجابة</option><option value="نعم">نعم</option><option value="لا">لا</option></select></div>
                                 </div>
+                            </section>
 
-
-                                <div class="metric-track">
-
-                                    <div
-                                        id="onTimeBar"
-                                        class="metric-fill success-fill"
-                                    ></div>
-
+                            <section class="form-step" data-step="2">
+                                <div class="section-heading">
+                                    <span class="section-heading-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c.5-1 1.4-1.5 2.7-1.5 1.6 0 2.8.8 2.8 2 0 3-5.5 1.6-5.5 4.3 0 1.1 1.1 1.9 2.8 1.9 1.3 0 2.2-.4 2.9-1.3"/></svg></span>
+                                    <div><small>المرحلة 02</small><h3>البيانات المالية والأسرية</h3><p>معلومات مرتبطة بالقسط والدخل والوضع المالي للأسرة.</p></div>
                                 </div>
+                                <div class="fields-grid">
+                                    <div class="field"><label for="payment_responsible">المسؤول عن دفع القسط</label><select id="payment_responsible" required><option value="">اختر المسؤول</option><option value="الأسرة(اب-أم)">الأسرة (أب - أم)</option><option value="الطالب">الطالب</option><option value="الطالب والأسرة">الطالب والأسرة</option><option value="منحة/جهة داعمة">منحة / جهة داعمة</option></select></div>
+                                    <div class="field"><label for="family_monthly_income">الدخل الشهري للعائلة</label><select id="family_monthly_income" required><option value="">اختر فئة الدخل</option><option value="اقل من 100">أقل من 100 دولار</option><option value="بين 100 و 200">بين 100 و 200 دولار</option><option value="بين 200 و 500">بين 200 و 500 دولار</option><option value="بين 500 و 1000">بين 500 و 1000 دولار</option><option value="اكثر من 1000">أكثر من 1000 دولار</option></select></div>
+                                    <div class="field"><label for="semester_fee">قيمة القسط الفصلي</label><div class="input-wrap"><input id="semester_fee" type="number" min="10.01" step="0.01" required placeholder="مثال: 1500"><span>ل.س</span></div></div>
+                                    <div class="field"><label for="working_family_members">عدد العاملين في الأسرة</label><input id="working_family_members" type="number" min="0" required placeholder="مثال: 2"></div>
+                                    <div class="field"><label for="private_university_siblings">الإخوة في التعليم الجامعي الخاص</label><input id="private_university_siblings" type="number" min="0" required placeholder="مثال: 1"></div>
+                                </div>
+                            </section>
 
+                            <section class="form-step" data-step="3">
+                                <div class="section-heading">
+                                    <span class="section-heading-icon"><svg viewBox="0 0 24 24"><path d="M7 3v4"/><path d="M17 3v4"/><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 11h8"/><path d="M8 15h5"/></svg></span>
+                                    <div><small>المرحلة 03</small><h3>سجل السداد السابق</h3><p>بيانات تساعد النموذج على فهم نمط السداد السابق.</p></div>
+                                </div>
+                                <div class="fields-grid">
+                                    <div class="field"><label for="previous_payment_delay">هل سبق أن تأخرت في السداد؟</label><select id="previous_payment_delay" required><option value="">اختر الإجابة</option><option value="نعم">نعم</option><option value="لا">لا</option></select></div>
+                                    <div class="field"><label for="previous_unpaid_fees">هل توجد أقساط سابقة غير مسددة؟</label><select id="previous_unpaid_fees" required><option value="">اختر الإجابة</option><option value="نعم">نعم</option><option value="لا">لا</option></select></div>
+                                    <div class="field"><label for="delay_count">عدد مرات التأخر</label><input id="delay_count" type="number" min="0" required placeholder="مثال: 2"></div>
+                                    <div class="field"><label for="max_delay_days">أقصى مدة تأخير</label><div class="input-wrap"><input id="max_delay_days" type="number" min="0" required placeholder="مثال: 10"><span>يوم</span></div></div>
+                                    <div class="field"><label for="on_time_payment_count">عدد مرات السداد في الموعد</label><input id="on_time_payment_count" type="number" min="0" required placeholder="مثال: 5"></div>
+                                </div>
+                            </section>
+
+                            <section class="form-step" data-step="4">
+                                <div class="section-heading">
+                                    <span class="section-heading-icon"><svg viewBox="0 0 24 24"><path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg></span>
+                                    <div><small>المرحلة 04</small><h3>الموقع والسكن</h3><p>آخر مجموعة من البيانات قبل إرسال الطلب للنموذج.</p></div>
+                                </div>
+                                <div class="fields-grid">
+                                    <div class="field"><label for="governorate">المحافظة</label><select id="governorate" required><option value="">اختر المحافظة</option><option value="إدلب">إدلب</option><option value="الحسكة">الحسكة</option><option value="الرقة">الرقة</option><option value="السويداء">السويداء</option><option value="القنيطرة">القنيطرة</option><option value="اللاذقية">اللاذقية</option><option value="حلب">حلب</option><option value="حماة">حماة</option><option value="حمص">حمص</option><option value="درعا">درعا</option><option value="دمشق">دمشق</option><option value="دير الزور">دير الزور</option><option value="طرطوس">طرطوس</option></select></div>
+                                    <div class="field"><label for="housing">نوع السكن</label><select id="housing" required><option value="">اختر نوع السكن</option><option value="ملك">ملك</option><option value="ايجار">إيجار</option><option value="سكن جامعي">سكن جامعي</option><option value="مع الأقارب">مع الأقارب</option><option value="مخيم">مخيم</option></select></div>
+                                    <div class="field"><label for="distance_from_university">المسافة عن الجامعة</label><div class="input-wrap"><input id="distance_from_university" type="number" min="0" max="1000" step="0.1" required placeholder="مثال: 15"><span>كم</span></div></div>
+                                </div>
+                                <div class="ready-box"><span>✓</span><div><strong>أصبحت على بعد خطوة واحدة من النتيجة</strong><p>راجع قيم هذه المرحلة ثم اضغط «تنفيذ التنبؤ».</p></div></div>
+                            </section>
+
+                            <div id="errorMessage" class="error hidden" role="alert"></div>
+
+                            <div class="form-actions">
+                                <button type="button" id="previousButton" class="btn secondary hidden"><span>→</span> السابق</button>
+                                <div class="action-progress"><strong id="actionStepText">1 / 4</strong><div class="dots"><i class="active"></i><i></i><i></i><i></i></div></div>
+                                <button type="button" id="nextButton" class="btn primary">التالي <span>←</span></button>
+                                <button type="submit" id="predictButton" class="btn primary hidden"><span id="buttonText">تنفيذ التنبؤ</span><span>✦</span></button>
                             </div>
-
-
-
-                            <div class="compact-metric">
-
-                                <div class="compact-metric-head">
-
-                                    <div>
-
-                                        <span class="metric-state danger-state">
-                                            !
-                                        </span>
-
-                                        <span>
-                                            احتمال التأخر
-                                        </span>
-
-                                    </div>
-
-                                    <strong id="lateMetric">
-                                        0%
-                                    </strong>
-
-                                </div>
-
-
-                                <div class="metric-track">
-
-                                    <div
-                                        id="lateBar"
-                                        class="metric-fill danger-fill"
-                                    ></div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
+                        </form>
                     </div>
-
-                </section>
-
-
-
-                <!-- MODEL COMPARISON -->
-
-                <section class="result-card models-card">
-
-                    <div class="result-card-heading">
-
-                        <div>
-
-                            <span>
-                                MODEL EVALUATION
-                            </span>
-
-                            <h3>
-                                مقارنة أداء النماذج
-                            </h3>
-
-                        </div>
-
-                        <small>
-                            F1-score
-                        </small>
-
-                    </div>
-
-
-                    <div
-                        id="comparisonBars"
-                        class="comparison-bars"
-                    ></div>
-
-
-                    <div class="model-decision-note">
-
-                        <span>
-                            i
-                        </span>
-
-                        <p>
-                            المقارنة للعرض فقط، والقرار الحالي صادر
-                            عن النموذج الأفضل الذي تم اعتماده أثناء التدريب.
-                        </p>
-
-                    </div>
-
-                </section>
-
-            </div>
-
-
-
-            <!-- =============================================
-                 TABLE
-            ============================================== -->
-
-            <div class="compact-table-wrapper">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>النموذج</th>
-
-                            <th>Accuracy</th>
-
-                            <th>Precision</th>
-
-                            <th>Recall</th>
-
-                            <th>F1-score</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="comparisonTableBody">
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-
-            <!-- =============================================
-                 RESULT BOTTOM
-            ============================================== -->
-
-            <div class="result-bottom-row">
-
-                <div class="result-disclaimer">
-
-                    <span>
-                        i
-                    </span>
-
-                    <p>
-                        النتيجة تقدير احتمالي مبني على نموذج تعلم آلة،
-                        وليست قرارًا ماليًا نهائيًا.
-                    </p>
-
                 </div>
-
-
-                <div class="modal-actions">
-
-                    <button
-                        id="closeResultButton"
-                        type="button"
-                        class="secondary-button"
-                    >
-                        إغلاق
-                    </button>
-
-
-                    <button
-                        id="newPredictionButton"
-                        type="button"
-                        class="primary-button"
-                    >
-                        تنبؤ جديد
-                    </button>
-
-                </div>
-
             </div>
+        </section>
 
-        </div>
+        <!-- MODELS -->
+        <section id="models" class="page">
+            <div class="page-wrap narrow-wrap">
+                <div class="page-heading">
+                    <span class="eyebrow">MODEL EVALUATION</span>
+                    <h1>مقارنة النماذج</h1>
+                    <p>عرض موحد لمقاييس أداء النماذج المستخدمة أثناء مرحلة الاختيار.</p>
+                </div>
+                <div class="models-card">
+                    <div class="model-summary-grid">
+                        <div class="summary-card primary-summary"><span>النموذج المعتمد</span><strong id="bestModelName">جاري التحميل...</strong><small>أعلى نتيجة وفق معيار الاختيار</small></div>
+                        <div class="summary-card"><span>معيار الاختيار</span><strong id="selectionMetric">F1</strong><small>المقياس المستخدم للمفاضلة</small></div>
+                        <div class="summary-card"><span>حالة المقارنة</span><strong id="modelsStatus">جاري التحقق...</strong><small>الاتصال ببيانات النماذج</small></div>
+                    </div>
+                    <div class="chart-panel">
+                        <div class="chart-title"><div><span class="eyebrow">F1-SCORE</span><h2>الأداء المقارن</h2></div><span>القيمة الأعلى أفضل</span></div>
+                        <div id="modelsComparisonBars" class="comparison-bars"></div>
+                    </div>
+                    <div class="table-panel">
+                        <div class="chart-title"><div><span class="eyebrow">DETAILS</span><h2>جميع المقاييس</h2></div></div>
+                        <div class="table-wrap"><table><thead><tr><th>النموذج</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead><tbody id="comparisonTableBody"></tbody></table></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    </div>
+        <!-- SYSTEM -->
+        <section id="system-info" class="page">
+            <div class="page-wrap narrow-wrap">
+                <div class="page-heading"><span class="eyebrow">SYSTEM INFORMATION</span><h1>معلومات النظام</h1><p>ملخص تشغيلي عن الخدمة والنموذج وآلية النتيجة.</p></div>
+                <div class="system-grid">
+                    <article class="system-card"><span class="system-icon"><svg viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg></span><small>STATUS</small><h3>حالة النظام</h3><p id="systemState">جاري التحقق من الاتصال...</p></article>
+                    <article class="system-card"><span class="system-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/><path d="M12 8v8"/></svg></span><small>MODEL</small><h3>النموذج المعتمد</h3><p id="systemModel">جاري التحميل...</p></article>
+                    <article class="system-card"><span class="system-icon"><svg viewBox="0 0 24 24"><path d="M4 19V11"/><path d="M10 19V5"/><path d="M16 19v-7"/><path d="M22 19H2"/></svg></span><small>TASK</small><h3>نوع المهمة</h3><p>تصنيف احتمالية سداد القسط في الموعد أو التأخر.</p></article>
+                    <article class="system-card"><span class="system-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h10"/></svg></span><small>OUTPUT</small><h3>صيغة النتيجة</h3><p>نسبة احتمال السداد في الموعد ونسبة احتمال التأخر.</p></article>
+                </div>
+            </div>
+        </section>
 
+        <!-- ABOUT -->
+        <section id="about" class="page">
+            <div class="page-wrap narrow-wrap">
+                <div class="about-card">
+                    <div class="about-copy">
+                        <span class="eyebrow">ABOUT SDAD ML</span>
+                        <h1>مشروع تعلم آلة بواجهة عملية ومباشرة</h1>
+                        <p>يستخدم النظام بيانات الطالب لبناء تقدير لاحتمالية سداد القسط في الموعد، اعتمادًا على نموذج تعلم آلة تم تقييمه ومقارنته مع نماذج أخرى وفق مقاييس أداء معروفة.</p>
+                        <div class="about-points"><div><b>01</b><span><strong>إدخال منظم</strong><small>تقسيم البيانات إلى أربع مراحل قصيرة.</small></span></div><div><b>02</b><span><strong>تحليل آلي</strong><small>إرسال البيانات إلى النموذج عبر API.</small></span></div><div><b>03</b><span><strong>نتيجة قابلة للفهم</strong><small>احتمالات واضحة مع اسم النموذج المستخدم.</small></span></div></div>
+                    </div>
+                    <div class="about-visual" aria-hidden="true"><div class="about-grid-lines"></div><div class="about-model-card"><span>SDAD ML</span><strong>Prediction<br>System</strong><i></i></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
 </div>
 
-
-
-<!-- =========================================================
-     FOOTER
-========================================================= -->
-
-<footer class="main-footer">
-
-    <div class="footer-brand">
-
-        <img
-            src="/static/assets/logo_sd.png"
-            alt="Logo"
-        >
-
-        <div>
-
-            <strong>
-                نظام التنبؤ بسداد القسط
-            </strong>
-
-            <span>
-                مشروع مقرر تعلم الآلة
-            </span>
-
+<!-- RESULT MODAL -->
+<div id="resultModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="resultModalTitle">
+    <div class="modal-backdrop"></div>
+    <div class="modal-box">
+        <div class="modal-head">
+            <div><span class="eyebrow">PREDICTION RESULT</span><h2 id="resultModalTitle">نتيجة التنبؤ</h2></div>
+            <button id="closeModalButton" class="modal-close" aria-label="إغلاق">×</button>
         </div>
-
+        <div id="modalLoading" class="modal-loading">
+            <div class="loader"><span></span></div>
+            <h3>جاري تحليل بيانات الطالب</h3>
+            <p>يتم الآن إرسال البيانات إلى النموذج وتجهيز النتيجة.</p>
+        </div>
+        <div id="modalResultContent" class="result-content hidden">
+            <div id="resultHero" class="result-main">
+                <div id="resultStateIcon" class="result-icon">✓</div>
+                <span class="result-label">PREDICTION</span>
+                <h2 id="resultTitle">من المتوقع سداد القسط في الموعد</h2>
+                <p id="resultDescription">بناءً على تحليل بيانات الطالب باستخدام نموذج التعلم الآلي.</p>
+            </div>
+            <div class="probabilities">
+                <div class="probability on-time"><span class="probability-label">السداد في الموعد</span><strong id="onTimeMetric">0%</strong><div class="probability-track"><i></i></div></div>
+                <div class="probability late"><span class="probability-label">احتمال التأخر</span><strong id="lateMetric">0%</strong><div class="probability-track"><i></i></div></div>
+            </div>
+            <div class="best-model-box"><div class="trophy"><svg viewBox="0 0 24 24"><path d="M8 4h8v4a4 4 0 0 1-8 0V4Z"/><path d="M8 6H4v1a4 4 0 0 0 4 4"/><path d="M16 6h4v1a4 4 0 0 1-4 4"/><path d="M12 12v5"/><path d="M8 20h8"/></svg></div><div><span>النموذج المستخدم</span><strong id="usedModel">Random Forest</strong></div></div>
+            <div class="modal-comparison"><div class="modal-section-title"><h3>مقارنة أداء النماذج</h3><span>F1-score</span></div><div id="comparisonBars" class="comparison-bars compact"></div></div>
+            <div class="result-note"><span>i</span><p>النتيجة مبنية على البيانات المدخلة فقط، وتُعد تقديرًا داعمًا وليست ضمانًا أو قرارًا نهائيًا.</p></div>
+            <div class="modal-actions"><button id="newPredictionButton" class="btn secondary">تنبؤ جديد ↻</button><button id="closeResultButton" class="btn primary">إغلاق</button></div>
+        </div>
     </div>
+</div>
 
-
-    <span class="footer-en">
-        Student Payment Prediction System
-    </span>
-
-</footer>
-
-
-<!-- v7 لمنع تحميل JavaScript قديم -->
-<script
-    src="/static/app.js?v=7"
-    defer
-></script>
-
+<script src="/static/app.js?v=41" defer></script>
 </body>
 </html>
